@@ -107,25 +107,30 @@ while True:
 
         else:
             btc = get_balance("BTC")
-            if btc > 0.00009:
+            if btc > 0.00009 and BTC_i ==1:
                 upbit.sell_market_order("KRW-BTC", btc*0.9995)
                 print("BTC 매도합니다")
+                BTC_i = 0
             AXS = get_balance("AXS")
-            if AXS > 0.00008:
+            if AXS > 0.00008 and AXS_i ==1:
                 upbit.sell_market_order("KRW-AXS", AXS*0.9995)
                 print("AXS 매도합니다")
+                AXS_i = 0
             SAND = get_balance("SAND")
-            if SAND > 0.00008:
+            if SAND > 0.00008 and SAND_i ==1:
                 upbit.sell_market_order("KRW-SAND", SAND*0.9995)
                 print("SAND 매도합니다")
+                SAND_i = 0
             MANA = get_balance("MANA")
-            if MANA > 0.00008:
+            if MANA > 0.00008 and MANA_i ==1:
                 upbit.sell_market_order("KRW-MANA", MANA*0.9995)
                 print("MANA 매도합니다")
+                MANA_i = 0
             XTZ = get_balance("XTZ")
-            if XTZ > 0.00008:
+            if XTZ > 0.00008 and XTZ_i ==1:
                 upbit.sell_market_order("KRW-XTZ", XTZ*0.9995)
                 print("XTZ 매도합니다")
+                XTZ_i = 0
             BTC_i = 0
             AXS_i = 0
             SAND_i = 0
