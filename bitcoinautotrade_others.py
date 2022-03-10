@@ -79,7 +79,7 @@ while True:
             if target_price_AXS < current_price_AXS and AXS_i ==0:
                 if krw > 5000:
                     upbit.buy_market_order("KRW-POLY", krw*0.0995)
-                    print("AXS 매수합니다")
+                    print("POLY 매수합니다")
                     time.sleep(10)
                     krw = get_balance("KRW")
                     AXS_i = 1
@@ -93,14 +93,14 @@ while True:
             if target_price_MANA < current_price_MANA and MANA_i == 0:
                 if krw > 5000:
                     upbit.buy_market_order("KRW-AERGO", krw*0.0995)
-                    print("MANA 매수합니다")
+                    print("AERGO 매수합니다")
                     time.sleep(10)
                     krw = get_balance("KRW")
                     MANA_i = 1
             if target_price_XTZ < current_price_XTZ and XTZ_i == 0:
                 if krw > 5000:
                     upbit.buy_market_order("KRW-GLM", krw*0.1995)
-                    print("XTZ 매수합니다")
+                    print("GLM 매수합니다")
                     time.sleep(10)
                     krw = get_balance("KRW")
                     XTZ_i = 1
@@ -111,7 +111,7 @@ while True:
                 upbit.sell_market_order("KRW-BTC", btc*0.9995)
                 print("BTC 매도합니다")
                 BTC_i = 0
-            AXS = get_balance("AXS")
+            AXS = get_balance("POLY")
             if AXS > 0.00008 and AXS_i ==1:
                 upbit.sell_market_order("KRW-POLY", AXS*0.9995)
                 print("POLY 매도합니다")
@@ -121,12 +121,12 @@ while True:
                 upbit.sell_market_order("KRW-SAND", SAND*0.9995)
                 print("SAND 매도합니다")
                 SAND_i = 0
-            MANA = get_balance("MANA")
+            MANA = get_balance("AERGO")
             if MANA > 0.00008 and MANA_i ==1:
                 upbit.sell_market_order("KRW-AERGO", MANA*0.9995)
                 print("AERGO 매도합니다")
                 MANA_i = 0
-            XTZ = get_balance("XTZ")
+            XTZ = get_balance("GLM")
             if XTZ > 0.00008 and XTZ_i ==1:
                 upbit.sell_market_order("KRW-GLM", XTZ*0.9995)
                 print("GLM 매도합니다")
