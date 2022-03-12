@@ -2,8 +2,8 @@ import time
 import pyupbit
 import datetime
 
-access = ""
-secret = ""
+access = "S7EQC8OdSCSqDeQz8xFozCOHw2DW7qPPKu1qp1vx"
+secret = "ozCbzFCxakxVCx8htKqgWI6FxLdnGsjKSIfluGmE"
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
@@ -41,6 +41,7 @@ AXS_i = 0
 SAND_i = 0
 MANA_i =0
 XTZ_i =0
+XRP_i =0
 # 자동매매 시작
 while True:
     try:
@@ -54,12 +55,12 @@ while True:
             current_price_BTC = get_current_price("KRW-BTC")
 
 
-            target_price_AXS = get_target_price("KRW-POLY", 0.9)
-            current_price_AXS  = get_current_price("KRW-POLY")
+            target_price_AXS = get_target_price("KRW-XEC", 0.7)
+            current_price_AXS  = get_current_price("KRW-XEC")
 
 
-            target_price_SAND = get_target_price("KRW-SAND", 0.7)
-            current_price_SAND = get_current_price("KRW-SAND")
+            target_price_SAND = get_target_price("KRW-KNC", 0.5)
+            current_price_SAND = get_current_price("KRW-KNC")
 
 
             target_price_MANA = get_target_price("KRW-AERGO", 0.6)
@@ -68,6 +69,9 @@ while True:
 
             target_price_XTZ = get_target_price("KRW-GLM", 0.8)
             current_price_XTZ = get_current_price("KRW-GLM")
+
+            target_price_XRP = get_target_price("KRW-XRP", 0.5)
+            current_price_XRP = get_current_price("KRW-XRP")
 
             if target_price_BTC < current_price_BTC and BTC_i ==0:
                 if krw > 5000:
@@ -78,32 +82,39 @@ while True:
                     BTC_i =1
             if target_price_AXS < current_price_AXS and AXS_i ==0:
                 if krw > 5000:
-                    upbit.buy_market_order("KRW-POLY", krw*0.0995)
-                    print("POLY 매수합니다")
+                    upbit.buy_market_order("KRW-XEC", krw*0.0995)
+                    print("XEC 매수합니다")
                     time.sleep(10)
                     krw = get_balance("KRW")
                     AXS_i = 1
             if target_price_SAND < current_price_SAND and SAND_i == 0:
                 if krw > 5000:
-                    upbit.buy_market_order("KRW-SAND", krw*0.1995)
-                    print("SAND 매수합니다")
+                    upbit.buy_market_order("KRW-KNC", krw*0.1995)
+                    print("KNC 매수합니다")
                     time.sleep(10)
                     krw = get_balance("KRW")
                     SAND_i = 1
             if target_price_MANA < current_price_MANA and MANA_i == 0:
                 if krw > 5000:
                     upbit.buy_market_order("KRW-AERGO", krw*0.0995)
-                    print("AERGO 매수합니다")
+                    print("MANA 매수합니다")
                     time.sleep(10)
                     krw = get_balance("KRW")
                     MANA_i = 1
             if target_price_XTZ < current_price_XTZ and XTZ_i == 0:
                 if krw > 5000:
-                    upbit.buy_market_order("KRW-GLM", krw*0.1995)
-                    print("GLM 매수합니다")
+                    upbit.buy_market_order("KRW-GLM", krw*0.0995)
+                    print("XTZ 매수합니다")
                     time.sleep(10)
                     krw = get_balance("KRW")
                     XTZ_i = 1
+            if target_price_XRP < current_price_XRP and XRP_i == 0:
+                if krw > 5000:
+                    upbit.buy_market_order("KRW-XRP", krw*0.0995)
+                    print("XRP 매수합니다")
+                    time.sleep(10)
+                    krw = get_balance("KRW")
+                    XRP_i = 1
 
         else:
             btc = get_balance("BTC")
@@ -111,15 +122,15 @@ while True:
                 upbit.sell_market_order("KRW-BTC", btc*0.9995)
                 print("BTC 매도합니다")
                 BTC_i = 0
-            AXS = get_balance("POLY")
+            AXS = get_balance("XEC")
             if AXS > 0.00008 and AXS_i ==1:
-                upbit.sell_market_order("KRW-POLY", AXS*0.9995)
+                upbit.sell_market_order("KRW-XEC", AXS*0.9995)
                 print("POLY 매도합니다")
                 AXS_i = 0
-            SAND = get_balance("SAND")
+            SAND = get_balance("KNC")
             if SAND > 0.00008 and SAND_i ==1:
-                upbit.sell_market_order("KRW-SAND", SAND*0.9995)
-                print("SAND 매도합니다")
+                upbit.sell_market_order("KRW-KNC", SAND*0.9995)
+                print("KNC 매도합니다")
                 SAND_i = 0
             MANA = get_balance("AERGO")
             if MANA > 0.00008 and MANA_i ==1:
@@ -131,11 +142,17 @@ while True:
                 upbit.sell_market_order("KRW-GLM", XTZ*0.9995)
                 print("GLM 매도합니다")
                 XTZ_i = 0
+            XRP = get_balance("XRP")
+            if XRP > 0.00008 and XRP_i ==1:
+                upbit.sell_market_order("KRW-XRP", XRP*0.9995)
+                print("XRP 매도합니다")
+                XRP_i = 0
             BTC_i = 0
             AXS_i = 0
             SAND_i = 0
             MANA_i = 0
             XTZ_i = 0
+            XRP_i = 0
             krw = get_balance("KRW")
 
         time.sleep(1)
