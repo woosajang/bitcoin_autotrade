@@ -2,8 +2,8 @@ import time
 import pyupbit
 import datetime
 
-access = "S7EQC8OdSCSqDeQz8xFozCOHw2DW7qPPKu1qp1vx"
-secret = "ozCbzFCxakxVCx8htKqgWI6FxLdnGsjKSIfluGmE"
+access = ""
+secret = ""
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
@@ -76,42 +76,42 @@ while True:
 
             if target_price_BTC < current_price_BTC and BTC_i ==0:
                 if krw_buy > 5000:
-                    upbit.buy_market_order("KRW-BTC", krw*0.3995)
+                    upbit.buy_market_order("KRW-BTC", krw*0.5995)
                     print("BTC 매수합니다")
                     time.sleep(10)
                     krw_buy = get_balance("KRW")
                     BTC_i =1
             if target_price_AXS < current_price_AXS and AXS_i ==0:
                 if krw_buy > 5000:
-                    upbit.buy_market_order("KRW-XEC", krw*0.0995)
+                    upbit.buy_market_order("KRW-XEC", krw*0.3995)
                     print("XEC 매수합니다")
                     time.sleep(10)
                     krw_buy = get_balance("KRW")
                     AXS_i = 1
             if target_price_SAND < current_price_SAND and SAND_i == 0:
                 if krw_buy > 5000:
-                    upbit.buy_market_order("KRW-KNC", krw*0.1995)
+                    upbit.buy_market_order("KRW-KNC", krw*0.3995)
                     print("KNC 매수합니다")
                     time.sleep(10)
                     krw_buy = get_balance("KRW")
                     SAND_i = 1
             if target_price_MANA < current_price_MANA and MANA_i == 0:
                 if krw_buy > 5000:
-                    upbit.buy_market_order("KRW-AERGO", krw*0.0995)
+                    upbit.buy_market_order("KRW-AERGO", krw*0.1995)
                     print("MANA 매수합니다")
                     time.sleep(10)
                     krw_buy = get_balance("KRW")
                     MANA_i = 1
             if target_price_XTZ < current_price_XTZ and XTZ_i == 0:
                 if krw_buy > 5000:
-                    upbit.buy_market_order("KRW-GLM", krw*0.0995)
+                    upbit.buy_market_order("KRW-GLM", krw*0.1995)
                     print("XTZ 매수합니다")
                     time.sleep(10)
                     krw_buy = get_balance("KRW")
                     XTZ_i = 1
             if target_price_XRP < current_price_XRP and XRP_i == 0:
                 if krw_buy > 5000:
-                    upbit.buy_market_order("KRW-XRP", krw*0.0995)
+                    upbit.buy_market_order("KRW-XRP", krw*0.3995)
                     print("XRP 매수합니다")
                     time.sleep(10)
                     krw_buy = get_balance("KRW")
