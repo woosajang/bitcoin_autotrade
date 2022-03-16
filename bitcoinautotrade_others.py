@@ -97,14 +97,14 @@ while True:
                     SAND_i = 1
             if target_price_MANA < current_price_MANA and MANA_i == 0:
                 if krw_buy > 5000:
-                    upbit.buy_market_order("KRW-AERGO", krw*0.1995)
+                    upbit.buy_market_order("KRW-AERGO", krw*0.3995)
                     print("MANA 매수합니다")
                     time.sleep(10)
                     krw_buy = get_balance("KRW")
                     MANA_i = 1
             if target_price_XTZ < current_price_XTZ and XTZ_i == 0:
                 if krw_buy > 5000:
-                    upbit.buy_market_order("KRW-GLM", krw*0.1995)
+                    upbit.buy_market_order("KRW-GLM", krw*0.3995)
                     print("XTZ 매수합니다")
                     time.sleep(10)
                     krw_buy = get_balance("KRW")
@@ -116,6 +116,41 @@ while True:
                     time.sleep(10)
                     krw_buy = get_balance("KRW")
                     XRP_i = 1
+
+            # 조기 매도
+            if target_price_BTC*1.03 < current_price_BTC and BTC_i ==1:
+                btc = get_balance("BTC")
+                upbit.sell_market_order("KRW-BTC", btc*0.9995)
+                print("BTC 조기 매도합니다")
+
+            if  target_price_AXS*1.05 < current_price_AXS and AXS_i ==1:
+                AXS = get_balance("XEC")
+                upbit.sell_market_order("KRW-XEC", AXS*0.9995)
+                print("XEC 조기 매도합니다")
+
+            if target_price_SAND*1.05 < current_price_SAND and SAND_i==1:
+                SAND = get_balance("KNC")
+                upbit.sell_market_order("KRW-KNC", SAND*0.9995)
+                print("KNC 조기 매도합니다")
+
+
+            if target_price_MANA*1.05 < current_price_MANA and  MANA_i ==1:
+                MANA = get_balance("AERGO")
+                upbit.sell_market_order("KRW-AERGO", MANA*0.9995)
+                print("AERGO 조기 매도합니다")
+
+
+            if target_price_XTZ*1.05 < current_price_XTZ  and XTZ_i ==1:
+                XTZ = get_balance("GLM")
+                upbit.sell_market_order("KRW-GLM", XTZ*0.9995)
+                print("GLM 조기 매도합니다")
+
+
+            if target_price_XRP*1.05 < current_price_XRP  and XRP_i ==1:
+                XRP = get_balance("XRP")
+                upbit.sell_market_order("KRW-XRP", XRP*0.9995)
+                print("XRP 매도합니다")
+
 
         else:
             btc = get_balance("BTC")
