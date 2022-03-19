@@ -2,8 +2,8 @@ import time
 import pyupbit
 import datetime
 
-access = ""
-secret = ""
+access = "S7EQC8OdSCSqDeQz8xFozCOHw2DW7qPPKu1qp1vx"
+secret = "ozCbzFCxakxVCx8htKqgWI6FxLdnGsjKSIfluGmE"
 
 def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
@@ -36,12 +36,12 @@ def get_current_price(ticker):
 upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
 
-coin_list = ["KRW-BTC", "KRW-XEC", "KRW-KNC", "KRW-AERGO", "KRW-GLM", "KRW-XRP","KRW-WAVES","KRW-SAND"] #8
-coin_list_others = ["KRW-CHZ",  "KRW-JST", "KRW-ATOM"] #3
-k_list = [0.7, 0.7, 0.5, 0.6, 0.8,0.5, 0.6,0.6]
-k_list_others = [0.9, 0.8, 0.8]
-rate_list = [0.6995, 0.2995, 0.2995, 0.2995, 0.1995, 0.2995, 0.2995, 0.2995]
-rate_list_others = [0.0995,0.0995,0.0995]
+coin_list = ["KRW-BTC", "KRW-XEC", "KRW-KNC", "KRW-AERGO", "KRW-GLM", "KRW-XRP","KRW-WAVES","KRW-SAND","KRW-MBL"] #8
+coin_list_others = ["KRW-CHZ",  "KRW-JST", "KRW-ATOM", "KRW-ICX", "KRW-OMG", "KRW-SBD"] #5
+k_list = [0.7, 0.7, 0.5, 0.5, 0.5,0.5, 0.5,0.6,0.5 ]
+k_list_others = [0.9, 0.8, 0.8, 0.5,0.7, 0.7, 0.5]
+rate_list = [0.6995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995]
+rate_list_others = [0.1995,0.1995,0.1995,0.1995,0.1995,0.1995]
 i_list =[]
 ik_list = []
 i_list_others =[]
@@ -63,6 +63,7 @@ while True:
             for c in range(0,len(coin_list)):
                 target_price = get_target_price(coin_list[c],k_list[c])
                 current_price = get_current_price(coin_list[c])
+                # print(coin_list[c], target_price, current_price)
                 if target_price < current_price and coin_list[c] not in i_list and krw_buy > 5000:
                     if krw_buy < krw *0.21:
                         oder_krw = krw_buy
@@ -80,6 +81,7 @@ while True:
             for o in range(0,len(coin_list_others)):
                 target_price_others = get_target_price(coin_list_others[o],k_list_others[o])
                 current_price_others = get_current_price(coin_list_others[o])
+                # print(coin_list_others[o], target_price_others, current_price_others)
                 if target_price_others < current_price_others and coin_list_others[o] not in i_list_others and krw_buy > 5000:
                     if krw_buy < krw *0.11:
                         oder_krw = krw_buy
@@ -89,7 +91,7 @@ while True:
                     print(f"{coin_list_others[o]} 매수합니다")
                     time.sleep(10)
                     krw_buy = get_balance("KRW")
-                    i_list_others.append(coin_list[c])
+                    i_list_others.append(coin_list_others[o])
 
 
             # 조기 매도
@@ -97,7 +99,7 @@ while True:
             for s in range(0,len(i_list)):
                 target_price_sell = get_target_price(i_list[s],ik_list[s])
                 current_price_sell = get_current_price(i_list[s])
-                coin = get_balance(i_list[s])
+                coin = get_balance(i_list[s][4:])
                 if i_list[s] == "KRW-BTC":
                     profit = 1.03
                 else:
@@ -110,13 +112,13 @@ while True:
 
         else:
             for ss in range(0, len(i_list)):
-                coin = get_balance(i_list[ss])
+                coin = get_balance(i_list[ss][4:])
                 if coin > 0:
                     upbit.sell_market_order(i_list[ss], coin)
                     print(f"{i_list[ss]} 매도합니다")
                     i_list.remove(i_list[ss])
             for oo in range(0, len(i_list_others)):
-                coin = get_balance(i_list_others[oo])
+                coin = get_balance(i_list_others[oo][4:])
                 if coin > 0:
                     upbit.sell_market_order(i_list_others[oo], coin)
                     print(f"{i_list_others[oo]} 매도합니다")
