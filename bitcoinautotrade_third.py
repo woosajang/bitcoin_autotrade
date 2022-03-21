@@ -85,7 +85,7 @@ while True:
             for o in range(0,len(coin_list_others)):
                 target_price_others = get_target_price(coin_list_others[o],k_list_others[o])
                 current_price_others = get_current_price(coin_list_others[o])
-                if target_price_others < current_price_others and coin_list_others[o] not in i_list :
+                if target_price_others < current_price_others and coin_list_others[o] not in i_list_others :
                     bbk.append(coin_list_others[o])
 
                 # print(coin_list_others[o], target_price_others, current_price_others)
