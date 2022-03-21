@@ -45,6 +45,7 @@ rate_list_others = [0.1995,0.1995,0.1995,0.1995,0.1995,0.1995]
 i_list =[]
 ik_list = []
 i_list_others =[]
+bbk = []
 
 krw = get_balance("KRW")
 krw_buy = get_balance("KRW")
@@ -63,8 +64,11 @@ while True:
             for c in range(0,len(coin_list)):
                 target_price = get_target_price(coin_list[c],k_list[c])
                 current_price = get_current_price(coin_list[c])
+                if target_price < current_price and coin_list[c] not in i_list :
+                    bbk.append(coin_list[c])
+
                 # print(coin_list[c], target_price, current_price)
-                if target_price < current_price and coin_list[c] not in i_list and krw_buy > 5000:
+                if target_price < current_price and coin_list[c] not in i_list and krw_buy > 5000 and bbk.count(coin_list[c]) > 100:
                     if krw_buy < krw *0.21:
                         oder_krw = krw_buy
                     else:
@@ -81,8 +85,11 @@ while True:
             for o in range(0,len(coin_list_others)):
                 target_price_others = get_target_price(coin_list_others[o],k_list_others[o])
                 current_price_others = get_current_price(coin_list_others[o])
+                if target_price_others < current_price_others and coin_list_others[o] not in i_list :
+                    bbk.append(coin_list_others[o])
+
                 # print(coin_list_others[o], target_price_others, current_price_others)
-                if target_price_others < current_price_others and coin_list_others[o] not in i_list_others and krw_buy > 5000:
+                if target_price_others < current_price_others and coin_list_others[o] not in i_list_others and krw_buy  > 5000 and bbk.count(coin_list_others[o]) > 100:
                     if krw_buy < krw *0.11:
                         oder_krw = krw_buy
                     else:
@@ -129,6 +136,7 @@ while True:
             i_list = []
             ik_list = []
             i_list_others = []
+            bbk = []
 
         time.sleep(1)
     except Exception as e:
