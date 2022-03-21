@@ -71,6 +71,8 @@ while True:
                 if target_price < current_price and coin_list[c] not in i_list and krw_buy > 5000 and bbk.count(coin_list[c]) > 100:
                     if krw_buy < krw *0.21:
                         oder_krw = krw_buy
+                    elif coin_list[c] == "KRW-BTC" and krw_buy < krw *0.6995:
+                        oder_krw = krw_buy
                     else:
                         oder_krw = krw * rate_list[c]
                     upbit.buy_market_order(coin_list[c], oder_krw)
