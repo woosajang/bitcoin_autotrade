@@ -44,6 +44,7 @@ rate_list = [0.6995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2
 rate_list_others = [0.1995,0.1995,0.1995,0.1995,0.1995,0.1995]
 i_list =[]
 ik_list = []
+ik_list_others = []
 i_list_others =[]
 bbk = []
 
@@ -70,8 +71,6 @@ while True:
                 # print(coin_list[c], target_price, current_price)
                 if target_price < current_price and coin_list[c] not in i_list and krw_buy > 5000 and bbk.count(coin_list[c]) > 100:
                     if krw_buy < krw *0.21:
-                        oder_krw = krw_buy
-                    elif coin_list[c] == "KRW-BTC" and krw_buy < krw *0.6995:
                         oder_krw = krw_buy
                     else:
                         oder_krw = krw * rate_list[c]
@@ -101,6 +100,7 @@ while True:
                     time.sleep(10)
                     krw_buy = get_balance("KRW")
                     i_list_others.append(coin_list_others[o])
+                    ik_list_others.append(k_list_others[o])
 
 
             # 조기 매도
@@ -116,6 +116,16 @@ while True:
                 if target_price_sell*profit < current_price_sell and coin > 0:
                     upbit.sell_market_order(i_list[s], coin)
                     print(f"{i_list[s]} 조기 매도합니다")
+                    krw_buy = get_balance("KRW")
+
+            for j in range(0,len(i_list_others)):
+                target_price_sell = get_target_price(i_list_others[j],ik_list_others[j])
+                current_price_sell = get_current_price(i_list_others[j])
+                coin = get_balance(i_list_others[j][4:])
+                profit = 1.07
+                if target_price_sell*profit < current_price_sell and coin > 0:
+                    upbit.sell_market_order(i_list_others[j], coin)
+                    print(f"{i_list_others[j]} 조기 매도합니다")
                     krw_buy = get_balance("KRW")
 
 
