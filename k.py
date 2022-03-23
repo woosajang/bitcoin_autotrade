@@ -4,6 +4,7 @@ import numpy as np
 
 def get_ror(k=0.5):
     df = pyupbit.get_ohlcv("KRW-AXS")
+    df = df[180:]
     df['range'] = (df['high'] - df['low']) * k
     df['target'] = df['open'] + df['range'].shift(1)
 
@@ -16,6 +17,6 @@ def get_ror(k=0.5):
     return ror
 
 
-for k in np.arange(0.1, 2.0, 0.1):
+for k in np.arange(0.1, 1.0, 0.1):
     ror = get_ror(k)
     print("%.1f %f" % (k, ror))
