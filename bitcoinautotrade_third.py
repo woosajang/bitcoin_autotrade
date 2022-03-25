@@ -38,8 +38,8 @@ print("autotrade start")
 
 coin_list = ["KRW-BTC", "KRW-XEC", "KRW-KNC", "KRW-AERGO", "KRW-GLM", "KRW-XRP","KRW-WAVES","KRW-SAND","KRW-MBL"] #8
 coin_list_others = ["KRW-CHZ",  "KRW-JST", "KRW-ATOM", "KRW-ICX", "KRW-OMG", "KRW-SBD"] #5
-k_list = [0.7, 0.7, 0.5, 0.5, 0.5,0.5, 0.5,0.6,0.5 ]
-k_list_others = [0.9, 0.8, 0.8, 0.5,0.7, 0.7, 0.5]
+k_list = [0.5, 0.5, 0.5, 0.5, 0.5,0.5, 0.5,0.5,0.5 ]
+k_list_others = [0.5, 0.5, 0.5, 0.5,0.5, 0.5, 0.5]
 rate_list = [0.6995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995]
 rate_list_others = [0.1995,0.1995,0.1995,0.1995,0.1995,0.1995]
 i_list =[]
@@ -70,10 +70,12 @@ while True:
 
                 # print(coin_list[c], target_price, current_price)
                 if target_price < current_price and coin_list[c] not in i_list and krw_buy > 5000 and bbk.count(coin_list[c]) > 100:
-                    if krw_buy < krw *0.21:
-                        oder_krw = krw_buy
+                    if krw_buy < krw *0.30:
+                        oder_krw = krw_buy*0.9995
                     else:
                         oder_krw = krw * rate_list[c]
+                    if coin_list[c] == "KRW-BTC" and krw_buy < krw *0.70:
+                        oder_krw = krw_buy * 0.9995
                     upbit.buy_market_order(coin_list[c], oder_krw)
                     print(f"{coin_list[c]} 매수합니다")
                     time.sleep(10)
@@ -91,8 +93,8 @@ while True:
 
                 # print(coin_list_others[o], target_price_others, current_price_others)
                 if target_price_others < current_price_others and coin_list_others[o] not in i_list_others and krw_buy  > 5000 and bbk.count(coin_list_others[o]) > 100:
-                    if krw_buy < krw *0.11:
-                        oder_krw = krw_buy
+                    if krw_buy < krw *0.10:
+                        oder_krw = krw_buy*0.9995
                     else:
                         oder_krw = krw * rate_list_others[o]
                     upbit.buy_market_order(coin_list_others[o], oder_krw)
