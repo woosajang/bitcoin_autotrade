@@ -69,7 +69,7 @@ while True:
                     bbk.append(coin_list[c])
 
                 # print(coin_list[c], target_price, current_price)
-                if target_price < current_price and coin_list[c] not in i_list and krw_buy > 5000 and bbk.count(coin_list[c]) > 100:
+                if target_price < current_price and coin_list[c] not in i_list and krw_buy > 5000 and bbk.count(coin_list[c]) > 10:
                     if krw_buy < krw *0.30:
                         oder_krw = krw_buy*0.9995
                     else:
@@ -92,7 +92,7 @@ while True:
                     bbk.append(coin_list_others[o])
 
                 # print(coin_list_others[o], target_price_others, current_price_others)
-                if target_price_others < current_price_others and coin_list_others[o] not in i_list_others and krw_buy  > 5000 and bbk.count(coin_list_others[o]) > 100:
+                if target_price_others < current_price_others and coin_list_others[o] not in i_list_others and krw_buy  > 5000 and bbk.count(coin_list_others[o]) > 10:
                     if krw_buy < krw *0.10:
                         oder_krw = krw_buy*0.9995
                     else:
