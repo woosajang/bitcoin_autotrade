@@ -154,6 +154,10 @@ while True:
                     upbit.sell_market_order(i_list_short[o], coin)
                     print(f"{i_list_short[o]} 이익 실현 매도합니다")
                     krw_buy = get_balance("KRW")
+                if now_cell - time_short[o] > datetime.timedelta(seconds=900) and coin > 0 and target_price_sell_short * 1.02 < current_price_sell_short :
+                    upbit.sell_market_order(i_list_short[o], coin)
+                    print(f"{i_list_short[o]} 15분 매도합니다")
+                    krw_buy = get_balance("KRW")
                 if now_cell - time_short[o] > datetime.timedelta(seconds=3600) and coin > 0 and target_price_sell_short * 1.01 < current_price_sell_short :
                     upbit.sell_market_order(i_list_short[o], coin)
                     print(f"{i_list_short[o]} 60분 매도합니다")
