@@ -149,12 +149,12 @@ while True:
                 if i_list_short[o] == "KRW-BTC":
                     profit = 1.025
                 else:
-                    profit = 1.045
+                    profit = 1.08
                 if target_price_sell_short * profit < current_price_sell_short and coin > 0:
                     upbit.sell_market_order(i_list_short[o], coin)
                     print(f"{i_list_short[o]} 이익 실현 매도합니다")
                     krw_buy = get_balance("KRW")
-                if now_cell - time_short[o] > datetime.timedelta(seconds=900) and coin > 0 and target_price_sell_short * 1.02 < current_price_sell_short :
+                if now_cell - time_short[o] > datetime.timedelta(seconds=900) and coin > 0 and target_price_sell_short * 1.03 < current_price_sell_short :
                     upbit.sell_market_order(i_list_short[o], coin)
                     print(f"{i_list_short[o]} 15분 매도합니다")
                     krw_buy = get_balance("KRW")
