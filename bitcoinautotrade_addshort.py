@@ -7,6 +7,7 @@ import datetime
 access =
 secret =
 
+
 def get_boonbong(ticker):
     df_min = pyupbit.get_ohlcv(ticker, interval='minute3', count=200)
     volume = df_min.iloc[-2, 4]
@@ -19,22 +20,24 @@ def get_boonbong(ticker):
     volume_list = volume_all.to_list()
     avg_vol = np.average(volume_list)
     # print(ticker,volume, close, open,avg_vol)
-    return volume, close, open,volume_pre,close_pre,open_pre, avg_vol
+    return volume, close, open, volume_pre, close_pre, open_pre, avg_vol
 
 
 def get_target_price(ticker):
     """변동성 돌파 전략으로 매수 목표가 조회"""
     df = pyupbit.get_ohlcv(ticker, interval="day", count=2)
-    target_price =  (df.iloc[0]['high'] - df.iloc[0]['low'])
+    target_price = (df.iloc[0]['high'] - df.iloc[0]['low'])
     last_price = df.iloc[0]['close']
     open_price = df.iloc[0]['open']
     return target_price, last_price, open_price
+
 
 def get_start_time(ticker):
     """시작 시간 조회"""
     df = pyupbit.get_ohlcv(ticker, interval="day", count=1)
     start_time = df.index[0]
     return start_time
+
 
 def get_balance(ticker):
     """잔고 조회"""
@@ -47,23 +50,28 @@ def get_balance(ticker):
                 return 0
     return 0
 
+
 def get_current_price(ticker):
     """현재가 조회"""
     return pyupbit.get_orderbook(ticker=ticker)["orderbook_units"][0]["ask_price"]
+
 
 # 로그인
 upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
 
-coin_list = ["KRW-BTC", "KRW-XEC", "KRW-KNC", "KRW-AERGO", "KRW-GLM", "KRW-XRP","KRW-WAVES",
-             "KRW-SAND","KRW-CHZ",  "KRW-JST", "KRW-ATOM", "KRW-ICX", "KRW-OMG", "KRW-SBD",
-             "KRW-AXS", "KRW-MANA", "KRW-ENJ", "KRW-WAXP", "KRW-BORA", "KRW-PLA", "KRW-MOC", "KRW-ADA", "KRW-SXP","KRW-ETC"] #8
-k_list = [0.5, 0.5, 0.5, 0.5,0.5, 0.5,0.5,0.5,0.5, 0.5, 0.5, 0.5,0.5, 0.5, 0.5,0.5, 0.5, 0.5, 0.5, 0.5,0.5, 0.5,0.5,0.5,0.5]
-rate_list = [0.6995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995,0.1995,0.1995,0.1995,0.1995,0.1995,0.1995,
-             0.1995,0.1995,0.1995,0.1995,0.1995,0.1995,0.1995,0.1995,0.1995,0.1995]
-i_list =[]
+coin_list = ["KRW-BTC", "KRW-XEC", "KRW-KNC", "KRW-AERGO", "KRW-GLM", "KRW-XRP", "KRW-WAVES",
+             "KRW-SAND", "KRW-CHZ", "KRW-JST", "KRW-ATOM", "KRW-ICX", "KRW-OMG", "KRW-SBD",
+             "KRW-AXS", "KRW-MANA", "KRW-ENJ", "KRW-WAXP", "KRW-BORA", "KRW-PLA", "KRW-MOC", "KRW-ADA", "KRW-SXP",
+             "KRW-ETC"]  # 8
+k_list = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
+          0.5, 0.5, 0.5]
+rate_list = [0.6995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.1995, 0.1995, 0.1995, 0.1995, 0.1995,
+             0.1995,
+             0.1995, 0.1995, 0.1995, 0.1995, 0.1995, 0.1995, 0.1995, 0.1995, 0.1995, 0.1995]
+i_list = []
 ik_list = []
-i_list_short =[]
+i_list_short = []
 ik_list_short = []
 bbk = []
 time_short = []
@@ -78,29 +86,30 @@ while True:
         start_time = get_start_time("KRW-BTC")
         end_time = start_time + datetime.timedelta(days=1)
 
+        if start_time + datetime.timedelta(seconds=1800) < now < end_time + datetime.timedelta(seconds=3600):
+            # 대형주
 
-        if start_time < now < end_time - datetime.timedelta(seconds=1800):
-            #대형주
-
-            for c in range(0,len(coin_list)):
+            for c in range(0, len(coin_list)):
                 target_price_orgin, last_price, open_price = get_target_price(coin_list[c])
-                target_price = target_price_orgin * k_list[c] +last_price
+                target_price = target_price_orgin * k_list[c] + last_price
                 current_price = get_current_price(coin_list[c])
                 max_price = target_price_orgin * 0.8 + last_price
                 target_price_short = target_price_orgin * 0.1 + last_price
                 time.sleep(0.1)
-                volume, close, open,volume_pre,close_pre,open_pre, avg_vol = get_boonbong(coin_list[c])
-                if target_price < current_price and coin_list[c] not in i_list :
+                volume, close, open, volume_pre, close_pre, open_pre, avg_vol = get_boonbong(coin_list[c])
+                if target_price < current_price and coin_list[c] not in i_list:
                     bbk.append(coin_list[c])
 
                 # print(coin_list[c], target_price, current_price)
-                if target_price < current_price and coin_list[c] not in i_list and coin_list[c] not in i_list_short and krw_buy > 5000 \
-                        and bbk.count(coin_list[c]) > 2000 and target_price < max_price and  last_price / open_price < 1.1:
-                    if krw_buy < krw *0.30:
-                        oder_krw = krw_buy*0.9995
+                if target_price < current_price and coin_list[c] not in i_list and coin_list[
+                    c] not in i_list_short and krw_buy > 5000 \
+                        and bbk.count(
+                    coin_list[c]) > 2000 and target_price < max_price and last_price / open_price < 1.1:
+                    if krw_buy < krw * 0.30:
+                        oder_krw = krw_buy * 0.9995
                     else:
                         oder_krw = krw * rate_list[c]
-                    if coin_list[c] == "KRW-BTC" and krw_buy < krw *0.70:
+                    if coin_list[c] == "KRW-BTC" and krw_buy < krw * 0.70:
                         oder_krw = krw_buy * 0.9995
                     upbit.buy_market_order(coin_list[c], oder_krw)
                     print(f"{coin_list[c]} 매수합니다")
@@ -109,13 +118,14 @@ while True:
                     i_list.append(coin_list[c])
                     ik_list.append(current_price)
 
-                elif target_price_short < current_price and volume > avg_vol*3 and close - open > 0\
-                        and close < current_price and coin_list[c] not in i_list and coin_list[c] not in i_list_short and krw_buy > 5000\
-                        and  last_price  / open_price < 1.1:
-                    if krw_buy < krw *0.30:
-                        oder_krw = krw_buy*0.9995
+                elif target_price_short < current_price and volume > avg_vol * 3 and close - open > 0 and close_pre - open_pre >= 0\
+                        and close < current_price and coin_list[c] not in i_list and coin_list[
+                    c] not in i_list_short and krw_buy > 5000 \
+                        and last_price / open_price < 1.1:
+                    if krw_buy < krw * 0.30:
+                        oder_krw = krw_buy * 0.9995
                     else:
-                        oder_krw = krw_buy*0.2995
+                        oder_krw = krw_buy * 0.2995
                     upbit.buy_market_order(coin_list[c], oder_krw)
                     print(f"{coin_list[c]} 단타 매수합니다")
                     time.sleep(10)
@@ -127,7 +137,7 @@ while True:
 
             # 조기 매도
 
-            for s in range(0,len(i_list)):
+            for s in range(0, len(i_list)):
                 target_price_sell = ik_list[s]
                 current_price_sell = get_current_price(i_list[s])
                 coin = get_balance(i_list[s][4:])
@@ -136,7 +146,7 @@ while True:
                     profit = 1.03
                 else:
                     profit = 1.05
-                if target_price_sell*profit < current_price_sell and coin > 0:
+                if target_price_sell * profit < current_price_sell and coin > 0:
                     upbit.sell_market_order(i_list[s], coin)
                     print(f"{i_list[s]} 이익 실현 매도합니다")
                     krw_buy = get_balance("KRW")
@@ -154,17 +164,25 @@ while True:
                     upbit.sell_market_order(i_list_short[o], coin)
                     print(f"{i_list_short[o]} 이익 실현 매도합니다")
                     krw_buy = get_balance("KRW")
-                if now_cell - time_short[o] > datetime.timedelta(seconds=900) and coin > 0 and target_price_sell_short * 1.03 < current_price_sell_short :
+
+                if now_cell - time_short[o] > datetime.timedelta(
+                        seconds=900) and coin > 0 and target_price_sell_short * 1.03 < current_price_sell_short:
                     upbit.sell_market_order(i_list_short[o], coin)
                     print(f"{i_list_short[o]} 15분 매도합니다")
                     krw_buy = get_balance("KRW")
-                if now_cell - time_short[o] > datetime.timedelta(seconds=3600) and coin > 0 and target_price_sell_short * 1.01 < current_price_sell_short :
+                if now_cell - time_short[o] > datetime.timedelta(
+                        seconds=3600) and coin > 0 and target_price_sell_short * 1.01 < current_price_sell_short:
                     upbit.sell_market_order(i_list_short[o], coin)
                     print(f"{i_list_short[o]} 60분 매도합니다")
                     krw_buy = get_balance("KRW")
-                if now_cell - time_short[o] > datetime.timedelta(seconds=14400) and coin > 0 and target_price_sell_short * 1.0050 < current_price_sell_short :
+                if now_cell - time_short[o] > datetime.timedelta(
+                        seconds=14400) and coin > 0 and target_price_sell_short * 1.0050 < current_price_sell_short:
                     upbit.sell_market_order(i_list_short[o], coin)
                     print(f"{i_list_short[o]} 4시간 매도합니다")
+                    krw_buy = get_balance("KRW")
+                if target_price_sell_short * 0.97 > current_price_sell_short and coin > 0:
+                    upbit.sell_market_order(i_list_short[o], coin)
+                    print(f"{i_list_short[o]} 손절 매도합니다")
                     krw_buy = get_balance("KRW")
 
 
