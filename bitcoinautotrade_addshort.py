@@ -86,7 +86,7 @@ while True:
         start_time = get_start_time("KRW-BTC")
         end_time = start_time + datetime.timedelta(days=1)
 
-        if start_time + datetime.timedelta(seconds=1800) < now < end_time + datetime.timedelta(seconds=3600):
+        if start_time + datetime.timedelta(seconds=1800) < now < end_time + datetime.timedelta(seconds=900):
             # 대형주
 
             for c in range(0, len(coin_list)):
@@ -180,7 +180,8 @@ while True:
                     upbit.sell_market_order(i_list_short[o], coin)
                     print(f"{i_list_short[o]} 4시간 매도합니다")
                     krw_buy = get_balance("KRW")
-                if target_price_sell_short * 0.97 > current_price_sell_short and coin > 0:
+                if now_cell - time_short[o] > datetime.timedelta(
+                        seconds=14400) and coin > 0 and target_price_sell_short * 0.98 > current_price_sell_short and coin > 0:
                     upbit.sell_market_order(i_list_short[o], coin)
                     print(f"{i_list_short[o]} 손절 매도합니다")
                     krw_buy = get_balance("KRW")
