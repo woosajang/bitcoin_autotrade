@@ -94,7 +94,7 @@ while True:
                 target_price = target_price_orgin * k_list[c] + last_price
                 current_price = get_current_price(coin_list[c])
                 max_price = target_price_orgin * 0.8 + last_price
-                target_price_short = target_price_orgin * 0.1 + last_price
+                target_price_short = target_price_orgin * 0.2 + last_price
                 time.sleep(0.1)
                 volume, close, open, volume_pre, close_pre, open_pre, avg_vol = get_boonbong(coin_list[c])
                 if target_price < current_price and coin_list[c] not in i_list:
