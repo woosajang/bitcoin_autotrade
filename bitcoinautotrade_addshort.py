@@ -61,12 +61,14 @@ upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
 
 coin_list = ["KRW-BTC", "KRW-XEC", "KRW-KNC", "KRW-AERGO", "KRW-GLM", "KRW-WAVES",
-             "KRW-SAND", "KRW-CHZ", "KRW-JST", "KRW-ATOM", "KRW-ICX", "KRW-OMG", "KRW-SBD",
-             "KRW-AXS", "KRW-PLA", "KRW-AVAX", "KRW-ETC","KRW-AAVE","KRW-NEAR" ]  # 8
-k_list = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
-          0.5, 0.5, 0.5]
-rate_list = [0.6995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.1995, 0.1995, 0.1995, 0.1995, 0.1995,
-             0.1995,0.1995, 0.1995, 0.1995, 0.1995, 0.1995, 0.1995]
+             "KRW-SAND", "KRW-CHZ", "KRW-ATOM", "KRW-ICX", "KRW-OMG", "KRW-SBD",
+             "KRW-AXS", "KRW-PLA", "KRW-ETC","KRW-AAVE","KRW-NEAR","KRW-MLK" ,
+             "KRW-HUM", "KRW-ELF", "KRW-POWR", "KRW-AQT"]  # 8
+k_list = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,  0.5,
+          0.5, 0.5]
+rate_list = [0.6995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.1995, 0.1995, 0.1995,
+             0.1995, 0.1995, 0.1995,0.1995, 0.1995, 0.1995, 0.1995, 0.1995, 0.1995, 0.1995,
+             0.1995,0.1995 ]
 i_list = []
 ik_list = []
 i_list_short = []
@@ -162,7 +164,7 @@ while True:
                     upbit.sell_market_order(i_list_short[o], coin)
                     print(f"{i_list_short[o]} 이익 실현 매도합니다")
                     krw_buy = get_balance("KRW")
-                    
+
 
                 if now_cell - time_short[o] > datetime.timedelta(
                         seconds=1800) and coin > 0 and target_price_sell_short * 1.03 < current_price_sell_short < target_price_sell_short * 1.08:
