@@ -4,8 +4,8 @@ import numpy as np
 import pyupbit
 import datetime
 
-access =
-secret =
+access = "S7EQC8OdSCSqDeQz8xFozCOHw2DW7qPPKu1qp1vx"
+secret = "ozCbzFCxakxVCx8htKqgWI6FxLdnGsjKSIfluGmE"
 
 
 def get_boonbong(ticker):
@@ -75,6 +75,7 @@ i_list_short = []
 ik_list_short = []
 bbk = []
 time_short = []
+long = 0
 
 krw = get_balance("KRW")
 krw_buy = get_balance("KRW")
@@ -104,7 +105,7 @@ while True:
                 if target_price < current_price and coin_list[c] not in i_list and coin_list[
                     c] not in i_list_short and krw_buy > 5000 \
                         and bbk.count(
-                    coin_list[c]) > 2000 and current_price > max_price and last_price / open_price < 1.1:
+                    coin_list[c]) > 2000 and current_price < max_price and last_price / open_price < 1.1 and long == 1:
                     if krw_buy < krw * 0.30:
                         oder_krw = krw_buy * 0.9995
                     else:
