@@ -4,8 +4,8 @@ import numpy as np
 import pyupbit
 import datetime
 
-access = "TbyNc1fUjB5x0HvvjczuzxcBGKrcTXMQtdThxRUr"
-secret = "jwtGPLX0QEWzM4gZOS5UOxQ0DVtGRgSvBMAZzLdm"
+access = ""
+secret = ""
 
 
 def get_boonbong(ticker):
