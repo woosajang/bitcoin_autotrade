@@ -217,6 +217,7 @@ while True:
             i_list_short = []
             ik_list_short = []
             time_short = []
+            bbk_short = []
 
         time.sleep(1)
     except Exception as e:
