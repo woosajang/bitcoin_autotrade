@@ -95,7 +95,7 @@ while True:
                 target_price_orgin, last_price, open_price = get_target_price(coin_list[c])
                 target_price = target_price_orgin * k_list[c] + last_price
                 current_price = get_current_price(coin_list[c])
-                max_price = target_price_orgin * 0.8 + last_price
+                max_price = target_price_orgin + last_price
                 target_price_short = target_price_orgin * 0.2 + last_price
                 time.sleep(0.1)
                 volume, close, open, volume_pre, close_pre, open_pre, avg_vol = get_boonbong(coin_list[c])
@@ -120,10 +120,10 @@ while True:
                     i_list.append(coin_list[c])
                     ik_list.append(current_price)
 
-                elif volume > avg_vol * 2 and avg_vol * 2 < volume_pre < volume and close - open > 0 and close_pre - open_pre > 0\
+                elif volume > avg_vol * 2 and avg_vol * 1.7 < volume_pre < volume and close - open > 0 and close_pre - open_pre > 0\
                         and close < current_price and coin_list[c] not in i_list and coin_list[
                     c] not in i_list_short and krw_buy > 5000 \
-                        and last_price / open_price < 1.1 :
+                        and last_price / open_price < 1.1 and current_price < max_price:
                     if krw_buy < krw * 0.30:
                         oder_krw = krw_buy * 0.9995
                     else:
@@ -178,11 +178,11 @@ while True:
                     upbit.sell_market_order(i_list_short[o], coin)
                     print(f"{i_list_short[o]} 매도합니다")
                     krw_buy = get_balance("KRW")
-                    while i_list_short[o] in bbk_short:
-                        bbk_short.remove(i_list_short[o])
-                    i_list_short.remove(i_list_short[o])
-                    ik_list_short.remove(ik_list_short[o])
-                    time_short.remove(time_short[o])
+                    # while i_list_short[o] in bbk_short:
+                    #     bbk_short.remove(i_list_short[o])
+                    # i_list_short.remove(i_list_short[o])
+                    # ik_list_short.remove(ik_list_short[o])
+                    # time_short.remove(time_short[o])
 
         else:
             for ss in range(0, len(i_list)):
@@ -211,3 +211,4 @@ while True:
     except Exception as e:
         print(e)
         time.sleep(1)
+
