@@ -120,7 +120,7 @@ while True:
                 elif target_price_short < current_price and volume_pre * 1.5  < volume and close - open > 0 and close_pre - open_pre > 0\
                         and close < current_price and coin_list[c] not in i_list and coin_list[
                     c] not in i_list_short and krw_buy > 5000 \
-                        and last_price / open_price < 1.1 and current_price < max_price and krw_buy > krw*0.53 and c > 1 :
+                        and last_price / open_price < 1.1 and current_price < max_price :
                     if krw_buy < krw * 0.25:
                         oder_krw = krw_buy * 0.9995
                     else:
