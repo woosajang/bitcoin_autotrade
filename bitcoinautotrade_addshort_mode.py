@@ -77,7 +77,6 @@ i_list_short = []
 ik_list_short = []
 bbk = []
 time_short = []
-bbk_short = []
 falling_transition_list = []
 rising_transition_list = []
 start = 1
@@ -126,7 +125,7 @@ while True:
 
                     else:  #상승 모드
                         max_price = target_price_orgin * 0.8 + last_price
-                        target_price_short = target_price_orgin * 0.3 + last_price
+                        target_price_short = target_price_orgin * 0.2 + last_price
                         limit = 1.10
                         falling_transition_list = []
                         start = 0
@@ -151,10 +150,13 @@ while True:
                         rising_transition_list = []
                         start = 0
                         # print("하강")
-
-
                 if target_price_short < current_price and coin_list[c] not in i_list_short and krw_buy > 5000 \
                         and last_price / open_price < limit and current_price < max_price :
+
+                    bbk.append(coin_list[c])
+
+                if target_price_short < current_price and coin_list[c] not in i_list_short and krw_buy > 5000 \
+                        and last_price / open_price < limit and current_price < max_price and bbk.count(coin_list[c]) > 100:
                     if krw_buy < krw * 0.2:
                         oder_krw = krw_buy * 0.9995
                     else:
@@ -232,7 +234,7 @@ while True:
             i_list_short = []
             ik_list_short = []
             time_short = []
-            bbk_short = []
+            bbk = []
             falling_transition_list = []
             rising_transition_list = []
             start = 1
