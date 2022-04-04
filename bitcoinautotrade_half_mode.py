@@ -68,13 +68,13 @@ def get_current_price(ticker):
 upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
 
-coin_list = ["KRW-BTC", "KRW-ETH","KRW-XEC", "KRW-KNC", "KRW-AERGO", "KRW-GLM", "KRW-WAVES",
+coin_list = ["KRW-BTC", "KRW-ETH","KRW-XEC", "KRW-KNC", "KRW-AERGO", "KRW-GLM",
              "KRW-SAND", "KRW-CHZ", "KRW-ATOM", "KRW-ICX", "KRW-OMG", "KRW-SBD","KRW-BORA",
              "KRW-AXS", "KRW-PLA", "KRW-ETC","KRW-AAVE","KRW-NEAR","KRW-MLK" ,
              "KRW-HUM", "KRW-ELF", "KRW-POWR", "KRW-AQT", "KRW-SOL"]  # 8
-k_list = [0.5, 0.5,0.5 ,0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,0.5, 0.5, 0.5, 0.5, 0.5, 0.5,  0.5,
+k_list = [0.5, 0.5,0.5 ,0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,0.5,0.5, 0.5, 0.5, 0.5,  0.5,
           0.5, 0.5,0.5]
-rate_list = [0.4995,0.4995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995,0.2995,
+rate_list = [0.4995,0.4995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995,0.2995,
              0.2995, 0.2995, 0.2995,0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995, 0.2995,
              0.2995,0.2995,0.2995 ]
 i_list = []
@@ -110,17 +110,17 @@ while True:
                 volume, close, open, volume_pre, close_pre, open_pre, avg_vol = get_boonbong(coin_list[c])
 
                 if current_price > ma5 : #상승 Transition
-                    if rising_transition_list.count() < 1000 and start == 1:
+                    if rising_transition_list.count() < 500 and start == 1:
                         rising_transition_list.append(coin_list[c])
                         target_price = target_price_orgin * 0.3 + last_price
                         max_price = target_price_orgin * 0.8 + last_price
-                        target_price_short = target_price_orgin * 0.1 + last_price
+                        target_price_short = target_price_orgin * 0.2 + last_price
                         limit = 1.15
                         falling_transition = 0
-                        if rising_transition_list.count() == 999:
+                        if rising_transition_list.count() == 499:
                             start = 0
 
-                    elif rising_transition_list.count() < 1000 and start == 0:
+                    elif rising_transition_list.count() < 500 and start == 0:
                         rising_transition_list.append(coin_list[c])
                         target_price = ma5 + ma5 * 0.01
                         max_price = target_price_orgin * 0.8 + last_price
@@ -145,7 +145,6 @@ while True:
                         target_price = target_price_orgin * 3.5 + last_price
                         max_price = target_price_orgin * 0.5 + last_price
                         target_price_short = target_price_orgin * 3.5 + last_price
-                        limit = last_price / open_price
                         falling_transition = 1
                         limit = 1.05
                         if falling_transition_list.count() == 299:
@@ -157,7 +156,7 @@ while True:
                         max_price = target_price_orgin * 0.5 + last_price
                         target_price_short = target_price_orgin * 3.5 + last_price
                         limit = last_price / open_price
-                        falling_transition = 0
+                        falling_transition = 1
                         limit = 1.05
                         rising_transition_list = []
                         start = 0
