@@ -80,7 +80,6 @@ time_short = []
 bbk_short = []
 falling_transition_list = []
 rising_transition_list = []
-falling_transition = 0
 start = 1
 
 krw = get_balance("KRW")
@@ -103,71 +102,65 @@ while True:
                 time.sleep(0.1)
                 volume, close, open, volume_pre, close_pre, open_pre, avg_vol= get_boonbong(coin_list[c])
 
-                if current_price > ma5 : #상승 Transition
-                    if rising_transition_list.count() < 500 and start == 1:
+                if current_price > ma5 and current_price > ma10: #상승 Transition
+                    if rising_transition_list.count(coin_list[c]) < 500 and start == 1:
                         rising_transition_list.append(coin_list[c])
                         max_price = target_price_orgin * 0.8 + last_price
-                        target_price_short = target_price_orgin * 0.2 + last_price
+                        target_price_short = target_price_orgin * 0.5 + last_price
                         limit = 1.10
-                        falling_transition = 0
-                        if rising_transition_list.count() == 499:
+                        if rising_transition_list.count(coin_list[c]) == 499:
                             start = 0
 
-                    elif rising_transition_list.count() < 500 and start == 0:
-                        if rising_transition_list.count() > 200:
+                    elif rising_transition_list.count(coin_list[c]) < 500 and start == 0:
+                        if rising_transition_list.count(coin_list[c]) > 200:
                             rising_transition_list.append(coin_list[c])
                             max_price = target_price_orgin * 0.8 + last_price
                             target_price_short = ma5 + ma5 * 0.01
                             limit = 1.10
-                            falling_transition = 0
                         else:
                             rising_transition_list.append(coin_list[c])
                             max_price = target_price_orgin * 0.8 + last_price
                             target_price_short = ma5 + ma5 * 0.025
                             limit = 1.10
-                            falling_transition = 0
                             # print("상승 Transition")
 
                     else:  #상승 모드
                         max_price = target_price_orgin * 0.8 + last_price
-                        target_price_short = target_price_orgin * 0.1 + last_price
+                        target_price_short = target_price_orgin * 0.3 + last_price
                         limit = 1.10
                         falling_transition_list = []
-                        falling_transition = 0
                         start = 0
                         # print("상승")
 
                 else:
-                    if falling_transition_list.count() < 300: # 하강 Transition
+                    if falling_transition_list.count(coin_list[c]) < 300: # 하강 Transition
                         falling_transition_list.append(coin_list[c])
                         max_price = target_price_orgin * 0.5 + last_price
                         target_price_short = target_price_orgin * 3.5 + last_price
                         limit = last_price / open_price
-                        falling_transition = 1
+
                         limit = 1.10
-                        if falling_transition_list.count() == 299:
+                        if falling_transition_list.count(coin_list[c]) == 299:
                             start = 0
                         # print("하강 Transition")
 
                     else: # 하강모드
                         max_price = target_price_orgin * 0.5 + last_price
                         target_price_short = target_price_orgin * 3.5 + last_price
-                        falling_transition = 1
                         limit = 1.10
                         rising_transition_list = []
                         start = 0
                         # print("하강")
 
 
-                if target_price_short < current_price and volume_pre * 1.5  < volume and close - open > 0 and close_pre - open_pre > 0\
-                        and close < current_price and coin_list[c] not in i_list_short and krw_buy > 5000 \
+                if target_price_short < current_price and coin_list[c] not in i_list_short and krw_buy > 5000 \
                         and last_price / open_price < limit and current_price < max_price :
                     if krw_buy < krw * 0.2:
                         oder_krw = krw_buy * 0.9995
                     else:
                         oder_krw = krw * 0.1995
                     upbit.buy_market_order(coin_list[c], oder_krw)
-                    print(f"{coin_list[c]} 단타 매수합니다")
+                    print(f"{coin_list[c]} 매수합니다")
                     time.sleep(10)
                     krw_buy = get_balance("KRW")
                     i_list_short.append(coin_list[c])
@@ -176,7 +169,19 @@ while True:
                     time_short.append(now_short)
 
             # 조기 매도
-            if falling_transition == 0 or start == 1:
+            if falling_transition_list.count(coin_list[c]) > 100:
+                for o in range(0, len(i_list_short)):
+                    target_price_sell_short = ik_list_short[o]
+                    current_price_sell_short = get_current_price(i_list_short[o])
+                    coin = get_balance(i_list_short[o][4:])
+                    now_cell = datetime.datetime.now()
+                    if target_price_sell_short * 1.0050 < current_price_sell_short:
+                        upbit.sell_market_order(i_list_short[o], coin)
+                        print(f"{i_list_short[o]}  falling transition 매도합니다")
+                        krw_buy = get_balance("KRW")
+
+
+            else:
 
                 for o in range(0, len(i_list_short)):
                     target_price_sell_short = ik_list_short[o]
@@ -208,16 +213,7 @@ while True:
                         upbit.sell_market_order(i_list_short[o], coin)
                         print(f"{i_list_short[o]} 8시간 매도합니다")
                         krw_buy = get_balance("KRW")
-            else:
-                for o in range(0, len(i_list_short)):
-                    target_price_sell_short = ik_list_short[o]
-                    current_price_sell_short = get_current_price(i_list_short[o])
-                    coin = get_balance(i_list_short[o][4:])
-                    now_cell = datetime.datetime.now()
-                    if target_price_sell_short * 1.0050 < current_price_sell_short:
-                        upbit.sell_market_order(i_list_short[o], coin)
-                        print(f"{i_list_short[o]}  falling transition 매도합니다")
-                        krw_buy = get_balance("KRW")
+
 
 
 
@@ -240,7 +236,7 @@ while True:
             falling_transition_list = []
             rising_transition_list = []
             start = 1
-            falling_transition = 0
+
 
 
         time.sleep(1)
