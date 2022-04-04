@@ -151,13 +151,13 @@ while True:
                         start = 0
                         # print("하강")
                 if target_price_short < current_price and coin_list[c] not in i_list_short and krw_buy > 5000 \
-                        and last_price / open_price < limit and current_price < max_price :
+                        and last_price / open_price < limit and current_price < max_price and target_price_orgin /open_price < 0.1:
 
                     bbk.append(coin_list[c])
 
                 if target_price_short < current_price and coin_list[c] not in i_list_short and krw_buy > 5000 \
                         and last_price / open_price < limit and current_price < max_price and bbk.count(coin_list[c]) > 100\
-                        and target_price_orgin /open_price > 0.1:
+                        and target_price_orgin /open_price < 0.1:
                     if krw_buy < krw * 0.2:
                         oder_krw = krw_buy * 0.9995
                     else:
