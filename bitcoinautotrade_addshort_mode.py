@@ -69,7 +69,7 @@ def get_current_price(ticker):
 upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
 
-coin_list = ["KRW-BTC", "KRW-ETH","KRW-XEC", "KRW-KNC", "KRW-AERGO", "KRW-GLM", "KRW-WAVES",
+coin_list = ["KRW-BTC", "KRW-ETH","KRW-XEC", "KRW-KNC", "KRW-AERGO", "KRW-GLM",
              "KRW-SAND", "KRW-CHZ", "KRW-ATOM", "KRW-ICX", "KRW-OMG", "KRW-SBD","KRW-BORA",
              "KRW-AXS", "KRW-PLA", "KRW-ETC","KRW-AAVE","KRW-NEAR","KRW-MLK" ,"KRW-NEO", "KRW-QTUM",
              "KRW-HUM", "KRW-ELF", "KRW-POWR", "KRW-AQT", "KRW-SOL", "KRW-VET", "KRW-EOS", "KRW-ADA"]
@@ -145,8 +145,7 @@ while True:
                     else: # 하강모드
                         max_price = target_price_orgin * 0.5 + last_price
                         target_price_short = target_price_orgin * 3.5 + last_price
-                        limit = last_price / open_price
-                        falling_transition = 0
+                        falling_transition = 1
                         limit = 1.05
                         rising_transition_list = []
                         start = 0
