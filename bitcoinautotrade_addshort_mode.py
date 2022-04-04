@@ -108,23 +108,30 @@ while True:
                         rising_transition_list.append(coin_list[c])
                         max_price = target_price_orgin * 0.8 + last_price
                         target_price_short = target_price_orgin * 0.2 + last_price
-                        limit = 1.15
+                        limit = 1.10
                         falling_transition = 0
                         if rising_transition_list.count() == 499:
                             start = 0
 
                     elif rising_transition_list.count() < 500 and start == 0:
-                        rising_transition_list.append(coin_list[c])
-                        max_price = target_price_orgin * 0.8 + last_price
-                        target_price_short = ma5 + ma5 * 0.01
-                        limit = 1.15
-                        falling_transition = 0
-                        # print("상승 Transition")
+                        if rising_transition_list.count() > 200:
+                            rising_transition_list.append(coin_list[c])
+                            max_price = target_price_orgin * 0.8 + last_price
+                            target_price_short = ma5 + ma5 * 0.01
+                            limit = 1.10
+                            falling_transition = 0
+                        else:
+                            rising_transition_list.append(coin_list[c])
+                            max_price = target_price_orgin * 0.8 + last_price
+                            target_price_short = ma5 + ma5 * 0.025
+                            limit = 1.10
+                            falling_transition = 0
+                            # print("상승 Transition")
 
                     else:  #상승 모드
                         max_price = target_price_orgin * 0.8 + last_price
                         target_price_short = target_price_orgin * 0.1 + last_price
-                        limit = 1.15
+                        limit = 1.10
                         falling_transition_list = []
                         falling_transition = 0
                         start = 0
@@ -137,7 +144,7 @@ while True:
                         target_price_short = target_price_orgin * 3.5 + last_price
                         limit = last_price / open_price
                         falling_transition = 1
-                        limit = 1.05
+                        limit = 1.10
                         if falling_transition_list.count() == 299:
                             start = 0
                         # print("하강 Transition")
@@ -146,7 +153,7 @@ while True:
                         max_price = target_price_orgin * 0.5 + last_price
                         target_price_short = target_price_orgin * 3.5 + last_price
                         falling_transition = 1
-                        limit = 1.05
+                        limit = 1.10
                         rising_transition_list = []
                         start = 0
                         # print("하강")
