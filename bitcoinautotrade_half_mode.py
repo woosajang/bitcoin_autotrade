@@ -4,8 +4,8 @@ import numpy as np
 import pyupbit
 import datetime
 
-access = ""
-secret = ""
+access = "S7EQC8OdSCSqDeQz8xFozCOHw2DW7qPPKu1qp1vx"
+secret = "ozCbzFCxakxVCx8htKqgWI6FxLdnGsjKSIfluGmE"
 
 
 def get_boonbong(ticker):
@@ -20,23 +20,24 @@ def get_boonbong(ticker):
     volume_list = volume_all.to_list()
     avg_vol = np.average(volume_list)
     # print(ticker,volume, close, open,avg_vol)
-    close_5 = df_min.iloc[-5:, 3]
-    close_5_list = close_5.to_list()
-    ma5 = np.average(close_5_list)
-    close_10 = df_min.iloc[-10:, 3]
-    close_10_list = close_10.to_list()
-    ma10 = np.average(close_10_list)
 
-    return volume, close, open, volume_pre, close_pre, open_pre, avg_vol, ma5, ma10
+    return volume, close, open, volume_pre, close_pre, open_pre, avg_vol
 
 
 def get_target_price(ticker):
     """변동성 돌파 전략으로 매수 목표가 조회"""
-    df = pyupbit.get_ohlcv(ticker, interval="day", count=2)
-    target_price = (df.iloc[0]['high'] - df.iloc[0]['low'])
-    last_price = df.iloc[0]['close']
-    open_price = df.iloc[0]['open']
-    return target_price, last_price, open_price
+    df = pyupbit.get_ohlcv(ticker, interval="day", count=20)
+    target_price = (df.iloc[-2]['high'] - df.iloc[-2]['low'])
+    last_price = df.iloc[-2]['close']
+    open_price = df.iloc[-2]['open']
+    close_5 = df.iloc[-5:, 3]
+    close_5_list = close_5.to_list()
+    ma5 = np.average(close_5_list)
+    close_10 = df.iloc[-10:, 3]
+    close_10_list = close_10.to_list()
+    ma10 = np.average(close_10_list)
+
+    return target_price, last_price, open_price, ma5, ma10
 
 
 def get_start_time(ticker):
@@ -103,10 +104,10 @@ while True:
             # 대형주
 
             for c in range(0, len(coin_list)):
-                target_price_orgin, last_price, open_price = get_target_price(coin_list[c])
+                target_price_orgin, last_price, open_price, ma5, ma10 = get_target_price(coin_list[c])
                 current_price = get_current_price(coin_list[c])
                 time.sleep(0.1)
-                volume, close, open, volume_pre, close_pre, open_pre, avg_vol, ma5, ma10 = get_boonbong(coin_list[c])
+                volume, close, open, volume_pre, close_pre, open_pre, avg_vol = get_boonbong(coin_list[c])
 
                 if current_price > ma5 : #상승 Transition
                     if rising_transition_list.count() < 1000 and start == 1:
