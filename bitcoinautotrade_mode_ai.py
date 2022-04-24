@@ -6,8 +6,8 @@ import datetime
 import schedule
 from fbprophet import Prophet
 
-access = "S7EQC8OdSCSqDeQz8xFozCOHw2DW7qPPKu1qp1vx"
-secret = "ozCbzFCxakxVCx8htKqgWI6FxLdnGsjKSIfluGmE"
+access = ""
+secret = ""
 
 
 
