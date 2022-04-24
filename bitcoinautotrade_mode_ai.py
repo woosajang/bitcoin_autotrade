@@ -177,7 +177,7 @@ while True:
 
                 if target_price_short < current_price and coin_list[c] not in i_list_short and krw_buy > 5000 \
                         and last_price / open_price < limit and current_price < max_price and target_price_orgin /open_price < 0.1\
-                        and current_price * 1.02 < predicted_close_price[c] :
+                        and current_price < predicted_close_price[c] :
 
                     bbk.append(coin_list[c])
 
@@ -185,7 +185,7 @@ while True:
 
                 if target_price_short < current_price and coin_list[c] not in i_list_short and krw_buy > 5000 \
                         and last_price / open_price < limit and current_price < max_price and bbk.count(coin_list[c]) > 5\
-                        and target_price_orgin /open_price < 0.1 and current_price * 1.02 < predicted_close_price[c] :
+                        and target_price_orgin /open_price < 0.1 and current_price < predicted_close_price[c] :
                     if krw_buy < krw * 0.2:
                         oder_krw = krw_buy * 0.9995
                     else:
