@@ -1,13 +1,14 @@
-import time
 
+import time
 import numpy as np
 import pyupbit
 import datetime
 import schedule
 from fbprophet import Prophet
 
-access = ""
-secret = ""
+access = "S7EQC8OdSCSqDeQz8xFozCOHw2DW7qPPKu1qp1vx"
+secret = "ozCbzFCxakxVCx8htKqgWI6FxLdnGsjKSIfluGmE"
+
 
 
 
@@ -59,6 +60,7 @@ def predict_price(ticker):
     df = df.reset_index()
     df['ds'] = df['index']
     df['y'] = df['close']
+    curr_p = df.iloc[-1]['close']
     data = df[['ds','y']]
     model = Prophet()
     model.fit(data)
@@ -68,6 +70,7 @@ def predict_price(ticker):
     if len(closeDf) == 0:
         closeDf = forecast[forecast['ds'] == data.iloc[-1]['ds'].replace(hour=9)]
     closeValue = closeDf['yhat'].values[0]
+    print(ticker, "closeValue", closeValue, curr_p, round(closeValue/curr_p,2))
     return closeValue
 
 def predict_price_all(coin_list):
@@ -88,17 +91,14 @@ def predict_price_all(coin_list):
 upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
 
-coin_list = ["KRW-BTC", "KRW-ETH","KRW-XEC", "KRW-KNC", "KRW-AERGO", "KRW-GLM",
-             "KRW-SAND", "KRW-CHZ", "KRW-ATOM", "KRW-ICX", "KRW-OMG", "KRW-SBD","KRW-BORA",
-             "KRW-AXS", "KRW-PLA", "KRW-ETC","KRW-AAVE","KRW-NEAR","KRW-MLK" ,"KRW-NEO", "KRW-QTUM",
-             "KRW-HUM", "KRW-ELF", "KRW-POWR", "KRW-AQT", "KRW-SOL", "KRW-VET", "KRW-EOS", "KRW-ADA"]
+coin_list = pyupbit.get_tickers(fiat="KRW")
 i_list_short = []
 ik_list_short = []
 bbk = []
 time_short = []
 falling_transition_list = []
 rising_transition_list = []
-start = 1
+start = []
 
 krw = get_balance("KRW")
 krw_buy = get_balance("KRW")
@@ -122,36 +122,37 @@ while True:
 
             for c in range(0, len(coin_list)):
                 target_price_orgin, last_price, open_price, ma5, ma10  = get_target_price(coin_list[c])
+                time.sleep(0.01)
                 current_price = get_current_price(coin_list[c])
 
                 if current_price > ma5 : #상승 Transition
-                    if rising_transition_list.count(coin_list[c]) < 500 and start == 1:
+                    if rising_transition_list.count(coin_list[c]) < 500 and coin_list[c] not in start:
                         rising_transition_list.append(coin_list[c])
                         max_price = target_price_orgin * 0.8 + last_price
-                        target_price_short = target_price_orgin * 0.5 + last_price
+                        target_price_short = target_price_orgin * 0.7 + last_price
                         limit = 1.10
-                        if rising_transition_list.count(coin_list[c]) == 499:
-                            start = 0
+                        if rising_transition_list.count(coin_list[c]) >= 499:
+                            start.append(coin_list[c])
 
-                    elif rising_transition_list.count(coin_list[c]) < 500 and start == 0:
+                    elif rising_transition_list.count(coin_list[c]) < 500 and coin_list[c] in start:
                         if rising_transition_list.count(coin_list[c]) > 200:
                             rising_transition_list.append(coin_list[c])
                             max_price = target_price_orgin * 0.8 + last_price
-                            target_price_short = ma5 + ma5 * 0.01
+                            target_price_short = ma5 + ma5 * 0.03
                             limit = 1.10
                         else:
                             rising_transition_list.append(coin_list[c])
                             max_price = target_price_orgin * 0.8 + last_price
-                            target_price_short = ma5 + ma5 * 0.02
+                            target_price_short = ma5 + ma5 * 0.05
                             limit = 1.10
                             # print("상승 Transition")
 
                     else:  #상승 모드
                         max_price = target_price_orgin * 0.8 + last_price
-                        target_price_short = target_price_orgin * 0.2 + last_price
+                        target_price_short = target_price_orgin * 0.5 + last_price
                         limit = 1.10
                         falling_transition_list = []
-                        start = 0
+                        start.append(coin_list[c])
                         # print("상승")
 
                 else:
@@ -162,8 +163,8 @@ while True:
                         limit = last_price / open_price
 
                         limit = 1.10
-                        if falling_transition_list.count(coin_list[c]) == 299:
-                            start = 0
+                        if falling_transition_list.count(coin_list[c]) >= 299:
+                            start.append(coin_list[c])
                         # print("하강 Transition")
 
                     else: # 하강모드
@@ -171,18 +172,20 @@ while True:
                         target_price_short = target_price_orgin * 3.5 + last_price
                         limit = 1.10
                         rising_transition_list = []
-                        start = 0
+                        start.append(coin_list[c])
                         # print("하강")
 
                 if target_price_short < current_price and coin_list[c] not in i_list_short and krw_buy > 5000 \
                         and last_price / open_price < limit and current_price < max_price and target_price_orgin /open_price < 0.1\
-                        and current_price < predicted_close_price[c] :
+                        and current_price * 1.02 < predicted_close_price[c] :
 
                     bbk.append(coin_list[c])
 
+                # print(coin_list[c], target_price_short - current_price, current_price * 1.02 - predicted_close_price[c] )
+
                 if target_price_short < current_price and coin_list[c] not in i_list_short and krw_buy > 5000 \
-                        and last_price / open_price < limit and current_price < max_price and bbk.count(coin_list[c]) > 100\
-                        and target_price_orgin /open_price < 0.1 and current_price < predicted_close_price[c] :
+                        and last_price / open_price < limit and current_price < max_price and bbk.count(coin_list[c]) > 5\
+                        and target_price_orgin /open_price < 0.1 and current_price * 1.02 < predicted_close_price[c] :
                     if krw_buy < krw * 0.2:
                         oder_krw = krw_buy * 0.9995
                     else:
@@ -260,7 +263,7 @@ while True:
             bbk = []
             falling_transition_list = []
             rising_transition_list = []
-            start = 1
+            start = []
 
 
 
